@@ -8,7 +8,7 @@ _RETRIEVED_AT = datetime(2026, 1, 1, tzinfo=UTC)
 FIXTURE_PAGES: dict[CountryCode, list[FetchedPage]] = {
     CountryCode.FR: [
         FetchedPage(
-            url="https://www.service-public.fr/",
+            url="https://www.service-public.gouv.fr/",
             title="Fixture: France EV incentives",
             text="Fixture page. Not real policy data.",
             retrieved_at=_RETRIEVED_AT,
