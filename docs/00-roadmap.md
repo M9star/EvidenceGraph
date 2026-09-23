@@ -49,7 +49,22 @@ Goal: the full graph shape runs end to end, offline, with tests, before any LLM 
 - [x] `uv sync`, `pytest` (20 passed), `ruff check`, `ruff format` all green
 - [ ] **You:** run `uv run pytest -q` yourself and read each test next to the code it covers
 - [ ] **You:** read every doc and rewrite each "four questions" answer in your own words
-- [ ] **You:** verify every allowlisted domain is still the correct official source
+- [x] Verify every allowlisted domain is still the correct official source (checked 2026-09-23)
+
+Allowlist check findings (2026-09-23):
+
+- **FR:** `service-public.fr` now 301-redirects to `service-public.gouv.fr`; allowlist and fixture
+  updated. The bonus écologique was replaced on 1 July 2025 by the CEE-funded
+  "Coup de pouce véhicules particuliers électriques". Social leasing 2026 reopened 16 July 2026
+  on `primealaconversion.gouv.fr` (not allowlisted yet; decide in week 2).
+- **DE:** `bafa.de` hosts the new "E-Auto-Förderung 2026" (income-tested, up to €80k–90k).
+  Applications go through `foerderzentrale.gov.de`, which is a portal, not a source; not added.
+- **UK:** `gov.uk` is correct. The Electric Car Grant (up to £3,750) is covered, including
+  `find-government-grants.service.gov.uk` via subdomain matching.
+- **IN:** PM E-DRIVE lives on `pmedrive.heavyindustries.gov.in`, covered by subdomain matching.
+  It subsidises e-2W/e-3W/buses/trucks, not private e-cars, so expect "no national car
+  subsidy" for India. `cea.nic.in` sits behind a Cloudflare challenge and will likely block
+  automated fetches in week 2.
 
 Definition of done: `pytest` is green, `ruff check` is clean, and you can explain every file.
 

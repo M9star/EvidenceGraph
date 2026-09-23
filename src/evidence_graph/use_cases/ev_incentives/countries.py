@@ -21,14 +21,16 @@ EV_COUNTRIES: Mapping[CountryCode, CountryProfile] = {
     CountryCode.FR: CountryProfile(
         code=CountryCode.FR,
         name="France",
-        allowed_domains=frozenset({"service-public.fr", "economie.gouv.fr", "ecologie.gouv.fr"}),
-        search_hint="bonus écologique véhicule électrique",
+        allowed_domains=frozenset(
+            {"service-public.gouv.fr", "economie.gouv.fr", "ecologie.gouv.fr"}
+        ),
+        search_hint="coup de pouce véhicules particuliers électriques",
     ),
     CountryCode.DE: CountryProfile(
         code=CountryCode.DE,
         name="Germany",
         allowed_domains=frozenset({"bafa.de", "bundesregierung.de", "bundesfinanzministerium.de"}),
-        search_hint="Förderung Elektroauto",
+        search_hint="E-Auto-Förderung",
     ),
     CountryCode.UK: CountryProfile(
         code=CountryCode.UK,
@@ -40,7 +42,7 @@ EV_COUNTRIES: Mapping[CountryCode, CountryProfile] = {
         code=CountryCode.IN,
         name="India",
         allowed_domains=frozenset({"heavyindustries.gov.in", "pib.gov.in", "cea.nic.in"}),
-        search_hint="electric vehicle incentive scheme",
+        search_hint="PM E-DRIVE scheme electric vehicle incentive",
     ),
 }
 
