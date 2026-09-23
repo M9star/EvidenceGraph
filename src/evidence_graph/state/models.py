@@ -24,6 +24,7 @@ class Citation(BaseModel):
     url: SourceUrl
     title: str
     retrieved_at: datetime
+    quote: str | None = None
 
 
 class IncentiveRecord(BaseModel):
@@ -38,6 +39,7 @@ class CountryReport(BaseModel):
     status: ReportStatus
     incentives: list[IncentiveRecord] = Field(default_factory=list)
     error: str | None = None
+    warnings: list[str] = Field(default_factory=list)
 
 
 class Comparison(BaseModel):

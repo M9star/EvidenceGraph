@@ -10,7 +10,7 @@ from evidence_graph.use_cases.ev_incentives import DEFAULT_QUERY
 
 @pytest.fixture
 def settings() -> Settings:
-    return Settings()
+    return Settings(_env_file=None, tool_mode="fixture", tavily_api_key=None)
 
 
 @pytest.fixture

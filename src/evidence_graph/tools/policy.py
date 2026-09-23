@@ -39,7 +39,9 @@ class AllowlistedToolkit:
             raise ToolPolicyError(f"{url} is outside the {country} allowlist")
         return self._inner.fetch(url, country)
 
-    def extract(self, page: FetchedPage, country: CountryCode) -> list[IncentiveRecord]:
+    def extract(
+        self, page: FetchedPage, country: CountryCode, feedback: str | None = None
+    ) -> list[IncentiveRecord]:
         if not is_allowed(page.url, self._domains(country)):
             raise ToolPolicyError(f"{page.url} is outside the {country} allowlist")
-        return self._inner.extract(page, country)
+        return self._inner.extract(page, country, feedback)

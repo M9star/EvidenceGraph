@@ -1,0 +1,91 @@
+{
+  "country": "IN",
+  "hits": [
+    {
+      "url": "https://pmedrive.heavyindustries.gov.in/",
+      "title": "https://pmedrive.heavyindustries.gov.in/"
+    },
+    {
+      "url": "https://pmedrive.heavyindustries.gov.in/about-us",
+      "title": "https://pmedrive.heavyindustries.gov.in/about-us"
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://pmedrive.heavyindustries.gov.in/about-us",
+      "title": "About Us - PM E-DRIVE",
+      "text": "Brief\nHome\nAbout Us\nPM Electric Drive Revolution in Innovative Vehicle Enhancement (PM E-DRIVE)\nScheme - Cabinet approved PM – E -Drive for promotion of electric mobility in the country with outlay of\nRs.10,900 crore for initially 2 years. The scheme has been extended till 31.03.2028 for all segments except\ne-3W (L5) (closed on 26.12.2025)\nComponent of the Scheme:\nSubsidies / Demand incentives worth Rs.4,674 crore to incentivize e- 2Ws, e-3Ws, e-ambulance, e- trucks and other emerging EVs.\nE- Voucher for EV buyers to avail demand incentive under the scheme.\nAllocation of Rs.500 crore for the deployment for e-ambulances.\nProvision for Rs. 4,391 crore for procurement of 14,028 e buses by STU / public transport agencies.\nCopyright © 2024 Ministry of Heavy\nIndustries, Government of India. All rights reserved.",
+      "retrieved_at": "2026-09-23T16:29:11.478055Z"
+    }
+  ],
+  "extractions": {
+    "https://pmedrive.heavyindustries.gov.in/about-us": [
+      [
+        {
+          "name": "Subsidies / Demand incentives",
+          "benefit": "incentivize e- 2Ws, e-3Ws, e-ambulance, e- trucks and other emerging EVs",
+          "eligibility": [
+            "e- 2Ws",
+            "e-3Ws",
+            "e-ambulance",
+            "e- trucks",
+            "other emerging EVs"
+          ],
+          "citations": [
+            {
+              "url": "https://pmedrive.heavyindustries.gov.in/about-us",
+              "title": "About Us - PM E-DRIVE",
+              "retrieved_at": "2026-09-23T16:29:11.478055Z",
+              "quote": "Subsidies / Demand incentives worth Rs.4,674 crore to incentivize e- 2Ws, e-3Ws, e-ambulance, e- trucks and other emerging EVs."
+            }
+          ]
+        },
+        {
+          "name": "E-Voucher",
+          "benefit": "avail demand incentive under the scheme",
+          "eligibility": [
+            "EV buyers"
+          ],
+          "citations": [
+            {
+              "url": "https://pmedrive.heavyindustries.gov.in/about-us",
+              "title": "About Us - PM E-DRIVE",
+              "retrieved_at": "2026-09-23T16:29:11.478055Z",
+              "quote": "E- Voucher for EV buyers to avail demand incentive under the scheme."
+            }
+          ]
+        },
+        {
+          "name": "Allocation for e-ambulances",
+          "benefit": "deployment for e-ambulances",
+          "eligibility": [
+            "e-ambulances"
+          ],
+          "citations": [
+            {
+              "url": "https://pmedrive.heavyindustries.gov.in/about-us",
+              "title": "About Us - PM E-DRIVE",
+              "retrieved_at": "2026-09-23T16:29:11.478055Z",
+              "quote": "Allocation of Rs.500 crore for the deployment for e-ambulances."
+            }
+          ]
+        },
+        {
+          "name": "Provision for e-buses",
+          "benefit": "procurement of 14,028 e buses",
+          "eligibility": [
+            "STU / public transport agencies"
+          ],
+          "citations": [
+            {
+              "url": "https://pmedrive.heavyindustries.gov.in/about-us",
+              "title": "About Us - PM E-DRIVE",
+              "retrieved_at": "2026-09-23T16:29:11.478055Z",
+              "quote": "Provision for Rs. 4,391 crore for procurement of 14,028 e buses by STU / public transport agencies."
+            }
+          ]
+        }
+      ]
+    ]
+  }
+}

@@ -27,14 +27,21 @@ class FixtureToolkit:
                 return page
         raise ToolUnavailableError(f"no fixture page for {url}")
 
-    def extract(self, page: FetchedPage, country: CountryCode) -> list[IncentiveRecord]:
+    def extract(
+        self, page: FetchedPage, country: CountryCode, feedback: str | None = None
+    ) -> list[IncentiveRecord]:
         return [
             IncentiveRecord(
                 name=page.title,
-                benefit="Fixture benefit. Replaced by live extraction in week 2.",
-                eligibility=["Fixture rule. Replaced by live extraction in week 2."],
+                benefit="Fixture benefit. Not real policy data.",
+                eligibility=["Fixture rule. Not real policy data."],
                 citations=[
-                    Citation(url=page.url, title=page.title, retrieved_at=page.retrieved_at)
+                    Citation(
+                        url=page.url,
+                        title=page.title,
+                        retrieved_at=page.retrieved_at,
+                        quote=page.text,
+                    )
                 ],
             )
         ]

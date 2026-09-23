@@ -18,16 +18,26 @@ able to answer, with running code and tests, every question in
 
 ## Status
 
-**Week 1: skeleton.** The graph runs end to end on offline fixture tools. No LLM or live web
-calls yet. Fixture results are placeholders, not real policy data.
+**Week 2: real tools and quality.** Live mode fetches official pages, extracts incentives with
+a local model (Ollama), and keeps only claims backed by verbatim quotes from the page. Tests
+stay offline by replaying a recorded, hand-verified live run.
 
 ## Quick start
 
 ```bash
 uv sync
 uv run pytest -q
-uv run uvicorn evidence_graph.api.main:app --reload
+make run                    # offline placeholder tools
+EVIDENCEGRAPH_TOOL_MODE=replay make run   # offline, recorded real pages
+make run-live               # live web + local model (needs `ollama pull llama3.1:8b`)
 ```
+
+| `EVIDENCEGRAPH_TOOL_MODE` | Search | Fetch | Extract |
+|---|---|---|---|
+| `fixture` (default) | canned | canned | canned placeholders |
+| `replay` | recorded | recorded | recorded |
+| `live` | Tavily, or seed URLs without a key | HTTP | Ollama |
+| `record` | as `live`, and writes `tests/fixtures/recorded/` | | |
 
 ```bash
 curl -s -X POST localhost:8000/v1/comparisons -H 'content-type: application/json' -d '{}'
@@ -58,18 +68,21 @@ that country is marked `insufficient_evidence` and the rest of the comparison st
 src/evidence_graph/
   api/          HTTP edge: routes, dependencies. Owns users (week 3).
   graph/        LangGraph: builder + nodes. Owns reasoning.
-  tools/        Tool contract, allowlist policy, fixture toolkit. Owns the web.
+  tools/        Tool contract, allowlist, registry, search, fetch, extract. Owns the web.
+  llm/          Model interface + Ollama. Used only by tools.
   state/        Pydantic models + graph state. The shared contract.
   use_cases/    Domain config. ev_incentives/ = countries, allowlists, fixtures.
   config.py     Settings from environment.
-tests/          Offline tests. Never hit the live web.
+tests/          Offline tests. Never hit the live web. fixtures/recorded/ = replayed live run.
 docs/           Learning notebook + roadmap.
 ```
 
-The dependency direction is one way: `api → graph → tools → state`. The graph never imports
+The dependency direction is one way: `api → graph → tools → (llm, state)`. The graph never imports
 FastAPI. Tools never decide the final answer. The use case plugs in config, not code paths.
 
 ## Learning notebook
+
+These notes live in a local, untracked `docs/` folder and are not part of the repository.
 
 | Doc | Topic |
 |---|---|
