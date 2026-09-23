@@ -18,9 +18,9 @@ able to answer, with running code and tests, every question in
 
 ## Status
 
-**Week 2: real tools and quality.** Live mode fetches official pages, extracts incentives with
-a local model (Ollama), and keeps only claims backed by verbatim quotes from the page. Tests
-stay offline by replaying a recorded, hand-verified live run.
+**Week 2 done. Next: week 3 (users).** Live mode fetches official pages, extracts with a local
+model (Ollama), and keeps only claims backed by verbatim quotes. Tests stay offline by
+replaying a recorded, hand-verified live run. Auth, roles, and per-user threads are next.
 
 ## Quick start
 
