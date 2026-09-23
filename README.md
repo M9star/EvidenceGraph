@@ -26,11 +26,16 @@ stay offline by replaying a recorded, hand-verified live run.
 
 ```bash
 uv sync
+make install                # also installs git hooks that block secrets on commit/push
 uv run pytest -q
 make run                    # offline placeholder tools
 EVIDENCEGRAPH_TOOL_MODE=replay make run   # offline, recorded real pages
 make run-live               # live web + local model (needs `ollama pull llama3.1:8b`)
 ```
+
+Copy `.env.example` to `.env` and put API keys only in `.env`. That file is gitignored.
+`make install` installs hooks that refuse to commit or push `.env`, key files, or strings
+that look like API keys. `make secrets-check` scans every tracked file the same way.
 
 | `EVIDENCEGRAPH_TOOL_MODE` | Search | Fetch | Extract |
 |---|---|---|---|

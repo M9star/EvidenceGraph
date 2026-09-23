@@ -29,6 +29,7 @@ packages = ["src/evidence_graph"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+markers = ["live: hits the live web or a paid API; run with pytest --live"]
 
 [tool.ruff]
 line-length = 100

@@ -1,12 +1,30 @@
+# Virtualenv and Python junk
 .venv/
 __pycache__/
 *.pyc
 .pytest_cache/
 .ruff_cache/
-.env
 dist/
 build/
 *.egg-info/
+
+# Secrets and local settings. Never commit these.
+# .env.example is the public template and stays tracked.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*credentials*.json
+*service-account*.json
+secrets/
 
 # Personal learning notes, kept locally only
 docs/
