@@ -6,6 +6,7 @@ from evidence_graph.config import Settings
 from evidence_graph.graph import build_graph
 from evidence_graph.tools.fixture import FixtureToolkit
 from evidence_graph.use_cases.ev_incentives import DEFAULT_QUERY
+from tests.support import TEST_JWT_SECRET
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -28,7 +29,12 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
 
 @pytest.fixture
 def settings() -> Settings:
-    return Settings(_env_file=None, tool_mode="fixture", tavily_api_key=None)
+    return Settings(
+        _env_file=None,
+        tool_mode="fixture",
+        tavily_api_key=None,
+        jwt_secret=TEST_JWT_SECRET,
+    )
 
 
 @pytest.fixture

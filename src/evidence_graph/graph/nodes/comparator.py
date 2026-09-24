@@ -9,4 +9,9 @@ def compare(state: ResearchState) -> dict:
         for code in state["countries"]
         if code not in by_country or by_country[code].status is not ReportStatus.OK
     ]
-    return {"comparison": Comparison(query=state["query"], reports=ordered, missing=missing)}
+    comparison = Comparison(query=state["query"], reports=ordered, missing=missing)
+    update: dict = {"comparison": comparison}
+    previous = state.get("comparison")
+    if previous is not None:
+        update["history"] = [previous]
+    return update

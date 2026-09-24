@@ -18,9 +18,9 @@ able to answer, with running code and tests, every question in
 
 ## Status
 
-**Week 2 done. Next: week 3 (users).** Live mode fetches official pages, extracts with a local
-model (Ollama), and keeps only claims backed by verbatim quotes. Tests stay offline by
-replaying a recorded, hand-verified live run. Auth, roles, and per-user threads are next.
+**Week 3 done. Next: week 4 (reliability).** The API requires a JWT. Roles separate readers
+from people who can start runs. Threads are owned by `user_id`; a `thread_id` is not a secret.
+Tests stay offline. Timeouts, budgets, and artifact storage are next.
 
 ## Quick start
 
@@ -45,7 +45,10 @@ that look like API keys. `make secrets-check` scans every tracked file the same 
 | `record` | as `live`, and writes `tests/fixtures/recorded/` | | |
 
 ```bash
-curl -s -X POST localhost:8000/v1/comparisons -H 'content-type: application/json' -d '{}'
+# .env must set EVIDENCEGRAPH_JWT_SECRET (see .env.example). Then:
+TOKEN=$(uv run python -m evidence_graph.auth --user local --role researcher)
+curl -s -X POST localhost:8000/v1/comparisons \
+  -H "authorization: Bearer $TOKEN" -H 'content-type: application/json' -d '{}'
 ```
 
 ## How it works
@@ -71,7 +74,9 @@ that country is marked `insufficient_evidence` and the rest of the comparison st
 
 ```text
 src/evidence_graph/
-  api/          HTTP edge: routes, dependencies. Owns users (week 3).
+  api/          HTTP edge: routes, dependencies. Auth and thread ownership live here.
+  auth/         JWT verify, roles, quotas. No FastAPI.
+  memory/       Checkpointer + thread store. Memory by default; Postgres when DATABASE_URL is set.
   graph/        LangGraph: builder + nodes. Owns reasoning.
   tools/        Tool contract, allowlist, registry, search, fetch, extract. Owns the web.
   llm/          Model interface + Ollama. Used only by tools.
@@ -83,7 +88,7 @@ docs/           Learning notebook + roadmap.
 ```
 
 The dependency direction is one way: `api → graph → tools → (llm, state)`. The graph never imports
-FastAPI. Tools never decide the final answer. The use case plugs in config, not code paths.
+FastAPI or parses JWTs. Tools never decide the final answer. The use case plugs in config, not code paths.
 
 ## Learning notebook
 

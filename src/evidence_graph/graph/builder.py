@@ -48,9 +48,12 @@ def run_comparison(
     query: str,
     countries: list[CountryCode],
     thread_id: str,
+    *,
+    user_id: str = "anonymous",
 ) -> Comparison:
     config = {
-        "configurable": {"thread_id": thread_id},
+        "configurable": {"thread_id": thread_id, "user_id": user_id},
+        "metadata": {"user_id": user_id},
         "recursion_limit": settings.recursion_limit,
     }
     result = graph.invoke({"query": query, "countries": countries}, config)
