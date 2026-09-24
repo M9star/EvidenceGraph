@@ -2,7 +2,7 @@ from collections.abc import Callable, Mapping
 
 from langgraph.types import Send
 
-from evidence_graph.state import CountryCode, ResearchState
+from evidence_graph.state import CountryCode, ResearchState, ResetReports
 from evidence_graph.use_cases.ev_incentives import CountryProfile
 
 RESEARCHER = "researcher"
@@ -16,7 +16,10 @@ def make_planner(
         unknown = [code for code in requested if code not in profiles]
         if unknown:
             raise ValueError(f"unsupported countries: {unknown}")
-        return {"countries": list(dict.fromkeys(requested))}
+        return {
+            "countries": list(dict.fromkeys(requested)),
+            "reports": ResetReports(),
+        }
 
     return plan
 

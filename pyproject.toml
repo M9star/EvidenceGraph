@@ -11,6 +11,14 @@ dependencies = [
     "pydantic>=2.8",
     "pydantic-settings>=2.4",
     "uvicorn[standard]>=0.30",
+    "pyjwt>=2.9",
+]
+
+[project.optional-dependencies]
+postgres = [
+    "langgraph-checkpoint-postgres>=2.0",
+    "psycopg[binary]>=3.2",
+    "psycopg-pool>=3.2",
 ]
 
 [dependency-groups]
@@ -28,7 +36,7 @@ packages = ["src/evidence_graph"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = ["src", "."]
 markers = ["live: hits the live web or a paid API; run with pytest --live"]
 
 [tool.ruff]

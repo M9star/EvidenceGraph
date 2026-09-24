@@ -30,3 +30,13 @@ class Settings(BaseSettings):
     extract_max_attempts: int = Field(default=2, ge=1, le=3)
 
     recordings_dir: Path = Path("tests/fixtures/recorded")
+
+    # Auth. Tokens come from an IdP (or `python -m evidence_graph.auth` locally).
+    jwt_secret: SecretStr | None = None
+    jwt_algorithm: Literal["HS256", "HS384", "HS512"] = "HS256"
+    jwt_issuer: str | None = None
+    jwt_audience: str | None = None
+    daily_run_quota: int = Field(default=20, ge=1, le=1000)
+
+    # When set, checkpoints, threads, and quotas persist in Postgres. Otherwise in-memory.
+    database_url: str | None = None
