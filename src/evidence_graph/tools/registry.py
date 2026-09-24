@@ -46,6 +46,15 @@ class ScopedToolkit:
         self._require(ToolName.EXTRACT)
         return self._inner.extract(page, country, feedback)
 
+    def hydrate(self, page: FetchedPage) -> FetchedPage:
+        hydrate = getattr(self._inner, "hydrate", None)
+        return hydrate(page) if hydrate else page
+
+    def set_run_deadline(self, deadline: float | None) -> None:
+        setter = getattr(self._inner, "set_run_deadline", None)
+        if setter:
+            setter(deadline)
+
 
 def toolkit_for(node: str, toolkit: ResearchToolkit) -> ScopedToolkit:
     try:

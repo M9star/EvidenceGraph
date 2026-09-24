@@ -18,9 +18,10 @@ able to answer, with running code and tests, every question in
 
 ## Status
 
-**Week 3 done. Next: week 4 (reliability).** The API requires a JWT. Roles separate readers
-from people who can start runs. Threads are owned by `user_id`; a `thread_id` is not a secret.
-Tests stay offline. Timeouts, budgets, and artifact storage are next.
+**Week 4 done. Next: week 5 (observability).** Runs are bounded: tool/country/run
+deadlines, retries only on transient errors, a per-researcher tool budget, and a URL cache.
+Full pages go to an artifact store; old conversation turns are summarized. Tracing and evals
+are next.
 
 ## Quick start
 
@@ -76,8 +77,9 @@ that country is marked `insufficient_evidence` and the rest of the comparison st
 src/evidence_graph/
   api/          HTTP edge: routes, dependencies. Auth and thread ownership live here.
   auth/         JWT verify, roles, quotas. No FastAPI.
-  memory/       Checkpointer + thread store. Memory by default; Postgres when DATABASE_URL is set.
-  graph/        LangGraph: builder + nodes. Owns reasoning.
+  memory/       Checkpointer, thread store, last-good reports, history summarizer.
+  artifacts/    Full page text by hash. Graph and models see an excerpt.
+  graph/        LangGraph: builder + nodes. Owns reasoning. policies.py = deadlines and budgets.
   tools/        Tool contract, allowlist, registry, search, fetch, extract. Owns the web.
   llm/          Model interface + Ollama. Used only by tools.
   state/        Pydantic models + graph state. The shared contract.

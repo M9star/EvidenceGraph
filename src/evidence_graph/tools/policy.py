@@ -45,3 +45,7 @@ class AllowlistedToolkit:
         if not is_allowed(page.url, self._domains(country)):
             raise ToolPolicyError(f"{page.url} is outside the {country} allowlist")
         return self._inner.extract(page, country, feedback)
+
+    def hydrate(self, page: FetchedPage) -> FetchedPage:
+        hydrate = getattr(self._inner, "hydrate", None)
+        return hydrate(page) if hydrate else page

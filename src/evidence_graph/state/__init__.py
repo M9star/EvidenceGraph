@@ -1,4 +1,9 @@
-from evidence_graph.state.graph_state import ResearchState, ResearchTask, ResetReports
+from evidence_graph.state.graph_state import (
+    ResearchState,
+    ResearchTask,
+    ResetHistory,
+    ResetReports,
+)
 from evidence_graph.state.models import (
     Citation,
     Comparison,
@@ -17,5 +22,6 @@ __all__ = [
     "ReportStatus",
     "ResearchState",
     "ResearchTask",
+    "ResetHistory",
     "ResetReports",
 ]

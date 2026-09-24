@@ -29,6 +29,7 @@ class ThreadSummary(BaseModel):
 class ThreadDetail(ThreadSummary):
     comparison: Comparison | None
     history: list[Comparison]
+    history_summaries: list[str]
 
 
 @router.get("/threads", response_model=list[ThreadSummary])
@@ -53,6 +54,7 @@ def get_thread(
         **_summary(record).model_dump(),
         comparison=_as_comparison(values.get("comparison")),
         history=[c for item in values.get("history", []) if (c := _as_comparison(item))],
+        history_summaries=[str(item) for item in values.get("history_summaries", [])],
     )
 
 

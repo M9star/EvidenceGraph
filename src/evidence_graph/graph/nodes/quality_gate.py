@@ -30,14 +30,20 @@ def gate(records: list[IncentiveRecord], page: FetchedPage) -> GateResult:
     return result
 
 
+def _page_for_check(toolkit: ResearchToolkit, page: FetchedPage) -> FetchedPage:
+    hydrate = getattr(toolkit, "hydrate", None)
+    return hydrate(page) if hydrate else page
+
+
 def extract_with_gate(
     toolkit: ResearchToolkit, page: FetchedPage, country: CountryCode, max_attempts: int
 ) -> GateResult:
     """Extract, check, and retry once with the checker's feedback. Keep the best attempt."""
+    checked = _page_for_check(toolkit, page)
     best: GateResult | None = None
     feedback: str | None = None
     for _ in range(max_attempts):
-        result = gate(toolkit.extract(page, country, feedback), page)
+        result = gate(toolkit.extract(page, country, feedback), checked)
         if best is None or len(result.accepted) > len(best.accepted):
             best = result
         if not result.problems:
