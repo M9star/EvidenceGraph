@@ -40,3 +40,13 @@ class Settings(BaseSettings):
 
     # When set, checkpoints, threads, and quotas persist in Postgres. Otherwise in-memory.
     database_url: str | None = None
+
+    # Week 4 reliability. HTTP/model still have their own timeouts; these bound the graph.
+    tool_timeout_s: float = Field(default=30.0, gt=0)
+    country_timeout_s: float = Field(default=90.0, gt=0)
+    run_timeout_s: float = Field(default=180.0, gt=0)
+    max_tool_calls_per_researcher: int = Field(default=20, ge=1, le=100)
+    tool_retries: int = Field(default=2, ge=0, le=5)
+    retry_backoff_s: float = Field(default=0.05, ge=0)
+    page_excerpt_chars: int = Field(default=12_000, ge=500)
+    history_keep_recent: int = Field(default=2, ge=1, le=20)

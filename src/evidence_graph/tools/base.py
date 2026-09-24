@@ -28,6 +28,7 @@ class FetchedPage(BaseModel):
     title: str
     text: str
     retrieved_at: datetime
+    artifact_id: str | None = None
 
 
 class ResearchToolkit(Protocol):
