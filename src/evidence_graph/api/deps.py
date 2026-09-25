@@ -7,6 +7,7 @@ from langgraph.graph.state import CompiledStateGraph
 from evidence_graph.auth import AuthError, Principal, QuotaStore, can_run, verify_bearer
 from evidence_graph.config import Settings
 from evidence_graph.memory import ThreadRecord, ThreadStore
+from evidence_graph.obs.cost import CostLedger
 
 
 def get_graph(request: Request) -> CompiledStateGraph:
@@ -27,6 +28,14 @@ def get_quota_store(request: Request) -> QuotaStore:
 
 def get_checkpointer(request: Request) -> BaseCheckpointSaver:
     return request.app.state.checkpointer
+
+
+def get_ledger(request: Request) -> CostLedger:
+    return request.app.state.ledger
+
+
+def get_request_id(request: Request) -> str | None:
+    return getattr(request.state, "request_id", None)
 
 
 def get_principal(

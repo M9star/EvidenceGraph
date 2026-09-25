@@ -23,9 +23,13 @@ def make_researcher(
     report_cache: ReportCache | None = None,
 ) -> Callable[[ResearchTask], dict]:
     def research_country(task: ResearchTask, config: RunnableConfig) -> dict:
+        configurable = (config or {}).get("configurable", {})
         setter = getattr(toolkit, "set_run_deadline", None)
         if setter is not None:
-            setter((config or {}).get("configurable", {}).get("run_deadline"))
+            setter(configurable.get("run_deadline"))
+        bind_run = getattr(toolkit, "set_run_id", None)
+        if bind_run is not None:
+            bind_run(configurable.get("run_id"))
         country = task["country"]
         profile = profiles[country]
         incentives: list[IncentiveRecord] = []

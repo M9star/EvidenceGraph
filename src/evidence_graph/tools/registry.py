@@ -55,6 +55,11 @@ class ScopedToolkit:
         if setter:
             setter(deadline)
 
+    def set_run_id(self, run_id: str | None) -> None:
+        setter = getattr(self._inner, "set_run_id", None)
+        if setter:
+            setter(run_id)
+
 
 def toolkit_for(node: str, toolkit: ResearchToolkit) -> ScopedToolkit:
     try:

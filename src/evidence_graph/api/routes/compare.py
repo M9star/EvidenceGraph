@@ -7,7 +7,9 @@ from pydantic import BaseModel, Field
 
 from evidence_graph.api.deps import (
     get_graph,
+    get_ledger,
     get_quota_store,
+    get_request_id,
     get_settings,
     get_thread_store,
     owned_thread,
@@ -15,8 +17,9 @@ from evidence_graph.api.deps import (
 )
 from evidence_graph.auth import Principal, QuotaExceeded, QuotaStore
 from evidence_graph.config import Settings
-from evidence_graph.graph import run_comparison
+from evidence_graph.graph import invoke_comparison
 from evidence_graph.memory import ThreadStore
+from evidence_graph.obs.cost import CostLedger
 from evidence_graph.state import Comparison, CountryCode
 from evidence_graph.use_cases.ev_incentives import DEFAULT_QUERY, EV_COUNTRIES
 
@@ -31,9 +34,18 @@ class ComparisonRequest(BaseModel):
     thread_id: str | None = Field(default=None, min_length=1, max_length=128)
 
 
+class RunSummary(BaseModel):
+    run_id: str
+    latency_s: float
+    tool_calls: int
+    tokens: int
+    estimated_usd: float
+
+
 class ComparisonResponse(BaseModel):
     thread_id: str
     comparison: Comparison
+    run: RunSummary
 
 
 @router.post("/comparisons", response_model=ComparisonResponse)
@@ -44,6 +56,8 @@ def create_comparison(
     principal: Annotated[Principal, Depends(require_researcher)],
     threads: Annotated[ThreadStore, Depends(get_thread_store)],
     quotas: Annotated[QuotaStore, Depends(get_quota_store)],
+    ledger: Annotated[CostLedger, Depends(get_ledger)],
+    request_id: Annotated[str | None, Depends(get_request_id)],
 ) -> ComparisonResponse:
     if body.thread_id is None:
         thread_id = str(uuid4())
@@ -62,12 +76,28 @@ def create_comparison(
             headers={"Retry-After": "86400"},
         ) from exc
 
-    comparison = run_comparison(
+    run_id = str(uuid4())
+    comparison, used = invoke_comparison(
         graph,
         settings,
         body.query,
         body.countries,
         thread_id,
         user_id=principal.user_id,
+        run_id=run_id,
+        request_id=request_id,
+        ledger=ledger,
     )
-    return ComparisonResponse(thread_id=thread_id, comparison=comparison)
+    cost = used.get(run_id)
+    summary = (
+        cost.summary(used.rates)
+        if cost is not None
+        else {
+            "run_id": run_id,
+            "latency_s": 0.0,
+            "tool_calls": 0,
+            "tokens": 0,
+            "estimated_usd": 0.0,
+        }
+    )
+    return ComparisonResponse(thread_id=thread_id, comparison=comparison, run=RunSummary(**summary))

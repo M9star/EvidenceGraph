@@ -1,4 +1,4 @@
-from evidence_graph.llm.base import ModelError, StructuredModel
+from evidence_graph.llm.base import ModelError, ModelUsage, StructuredModel, take_model_usage
 from evidence_graph.llm.ollama import OllamaModel
 
-__all__ = ["ModelError", "OllamaModel", "StructuredModel"]
+__all__ = ["ModelError", "ModelUsage", "OllamaModel", "StructuredModel", "take_model_usage"]

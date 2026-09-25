@@ -4,6 +4,7 @@ import httpx
 import pytest
 
 from evidence_graph.llm import ModelError, OllamaModel
+from evidence_graph.llm.base import take_model_usage
 
 
 def model(handler) -> OllamaModel:
@@ -17,11 +18,22 @@ def test_sends_schema_and_context_window_and_parses_json():
     def handler(request: httpx.Request) -> httpx.Response:
         seen["url"] = str(request.url)
         seen["body"] = json.loads(request.content)
-        return httpx.Response(200, json={"message": {"content": '{"incentives": []}'}})
+        return httpx.Response(
+            200,
+            json={
+                "message": {"content": '{"incentives": []}'},
+                "prompt_eval_count": 12,
+                "eval_count": 3,
+            },
+        )
 
     result = model(handler).generate_json("sys", "user", {"type": "object"})
+    usage = take_model_usage()
 
     assert result == {"incentives": []}
+    assert usage is not None
+    assert usage.prompt_tokens == 12
+    assert usage.completion_tokens == 3
     assert seen["url"] == "http://ollama.test/api/chat"
     assert seen["body"]["format"] == {"type": "object"}
     assert seen["body"]["stream"] is False

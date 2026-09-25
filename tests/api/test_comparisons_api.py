@@ -46,6 +46,10 @@ def test_create_comparison_defaults_to_all_four_countries(client, settings):
     body = response.json()
     assert body["thread_id"]
     assert [r["country"] for r in body["comparison"]["reports"]] == ["FR", "DE", "UK", "IN"]
+    assert body["run"]["run_id"]
+    assert body["run"]["tool_calls"] == 12
+    assert body["run"]["latency_s"] >= 0
+    assert body["run"]["estimated_usd"] > 0
 
 
 def test_each_request_gets_its_own_thread(client, settings):

@@ -50,3 +50,14 @@ class Settings(BaseSettings):
     retry_backoff_s: float = Field(default=0.05, ge=0)
     page_excerpt_chars: int = Field(default=12_000, ge=500)
     history_keep_recent: int = Field(default=2, ge=1, le=20)
+
+    # Week 5 observability. Tracing is always on in-process. Exporters and LangSmith are opt-in.
+    langsmith_api_key: SecretStr | None = None
+    langsmith_project: str = "evidencegraph"
+    otel_exporter: Literal["none", "console", "otlp"] = "none"
+    otel_endpoint: str | None = None
+    search_cost_usd: float = Field(default=0.008, ge=0)
+    fetch_cost_usd: float = Field(default=0.0, ge=0)
+    prompt_token_usd: float = Field(default=0.0, ge=0)
+    completion_token_usd: float = Field(default=0.0, ge=0)
+    eval_facts_min: float = Field(default=0.8, ge=0, le=1)

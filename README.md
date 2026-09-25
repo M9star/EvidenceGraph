@@ -18,10 +18,10 @@ able to answer, with running code and tests, every question in
 
 ## Status
 
-**Week 4 done. Next: week 5 (observability).** Runs are bounded: tool/country/run
-deadlines, retries only on transient errors, a per-researcher tool budget, and a URL cache.
-Full pages go to an artifact store; old conversation turns are summarized. Tracing and evals
-are next.
+**Week 5 done. Next: week 6 (ship).** Every run is traced (OpenTelemetry spans on the HTTP
+request, graph nodes, and tool calls) and billed on an in-process cost ledger. Golden evals
+and a CI gate sit next to the unit tests. LangSmith and OTLP export are opt-in. Docker and
+a thin UI are next.
 
 ## Quick start
 
@@ -29,6 +29,7 @@ are next.
 uv sync
 make install                # also installs git hooks that block secrets on commit/push
 uv run pytest -q
+make eval                   # golden dataset + CI score gate
 make run                    # offline placeholder tools
 EVIDENCEGRAPH_TOOL_MODE=replay make run   # offline, recorded real pages
 make run-live               # live web + local model (needs `ollama pull llama3.1:8b`)
@@ -80,6 +81,8 @@ src/evidence_graph/
   memory/       Checkpointer, thread store, last-good reports, history summarizer.
   artifacts/    Full page text by hash. Graph and models see an excerpt.
   graph/        LangGraph: builder + nodes. Owns reasoning. policies.py = deadlines and budgets.
+  obs/          OpenTelemetry spans, cost ledger, optional LangSmith.
+  evals/        Golden cases, graders, CI gate. `python -m evidence_graph.evals`.
   tools/        Tool contract, allowlist, registry, search, fetch, extract. Owns the web.
   llm/          Model interface + Ollama. Used only by tools.
   state/        Pydantic models + graph state. The shared contract.
@@ -89,8 +92,9 @@ tests/          Offline tests. Never hit the live web. fixtures/recorded/ = repl
 docs/           Learning notebook + roadmap.
 ```
 
-The dependency direction is one way: `api → graph → tools → (llm, state)`. The graph never imports
-FastAPI or parses JWTs. Tools never decide the final answer. The use case plugs in config, not code paths.
+The dependency direction is one way: `api → graph → tools → (llm, state)`. `obs` is used by
+api and graph. `evals` consume the graph; they are not imported by it. The graph never
+imports FastAPI or parses JWTs. Tools never decide the final answer.
 
 ## Learning notebook
 

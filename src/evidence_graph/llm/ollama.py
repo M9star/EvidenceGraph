@@ -3,7 +3,7 @@ from typing import Any
 
 import httpx
 
-from evidence_graph.llm.base import ModelError
+from evidence_graph.llm.base import ModelError, ModelUsage, record_model_usage
 
 
 class OllamaModel:
@@ -37,8 +37,16 @@ class OllamaModel:
         try:
             response = self._client.post(self._url, json=payload)
             response.raise_for_status()
-            content = response.json()["message"]["content"]
+            body = response.json()
+            content = body["message"]["content"]
             result = json.loads(content)
+            record_model_usage(
+                ModelUsage(
+                    prompt_tokens=int(body.get("prompt_eval_count") or 0),
+                    completion_tokens=int(body.get("eval_count") or 0),
+                    model=self._model,
+                )
+            )
         except (httpx.HTTPError, KeyError, ValueError) as exc:
             raise ModelError(f"ollama {self._model}: {type(exc).__name__}: {exc}") from exc
         if not isinstance(result, dict):

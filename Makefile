@@ -1,4 +1,4 @@
-.PHONY: install test test-live lint format run run-live record secrets-check
+.PHONY: install test test-live lint format run run-live record secrets-check eval
 
 install:
 	uv sync
@@ -32,6 +32,10 @@ run-live:
 # Review the diff by hand before committing: recordings become test truth.
 record:
 	EVIDENCEGRAPH_TOOL_MODE=record uv run python -m evidence_graph.cli
+
+# Golden evals. Same checks as tests/evals; exit 1 if a score falls below the gate.
+eval:
+	uv run python -m evidence_graph.evals
 
 # Fail if a tracked file looks like a secret. Run before you push.
 secrets-check:

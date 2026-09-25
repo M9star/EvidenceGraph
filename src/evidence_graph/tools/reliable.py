@@ -57,6 +57,11 @@ class ReliableToolkit:
         with self._lock:
             self._run_deadline = deadline
 
+    def set_run_id(self, run_id: str | None) -> None:
+        setter = getattr(self._inner, "set_run_id", None)
+        if setter is not None:
+            setter(run_id)
+
     def search(self, query: str, country: CountryCode) -> list[SearchHit]:
         return self._call(country, lambda: self._inner.search(query, country))
 

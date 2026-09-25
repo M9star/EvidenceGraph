@@ -17,9 +17,13 @@ def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip().lower()
 
 
-def _number_in_page(digits: str, page_text: str) -> bool:
+def number_in_text(digits: str, page_text: str) -> bool:
     pattern = _PAGE_SEPARATOR.join(re.escape(d) for d in digits)
     return re.search(rf"(?<!\d){pattern}(?!\d)", page_text) is not None
+
+
+def _number_in_page(digits: str, page_text: str) -> bool:
+    return number_in_text(digits, page_text)
 
 
 def claim_numbers(text: str) -> list[str]:
